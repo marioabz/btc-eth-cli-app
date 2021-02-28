@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+click = "==7.1.2"
+eth-utils = "*"
+pycryptodome = "*"
+bitcoinlib = "*"
+cryptoaddress = "*"
+bech32 = "*"
+pytest = "*"
+e1839a8 = {path = "."}
+main = {editable = true,path = "."}
+
+
+[requires]
+python_version = "3.7"
