@@ -2,6 +2,8 @@
 import eth_utils
 import cryptoaddress
 import bech32
+import click
+from typing import Callable
 
 
 def get_address_type(address: str) -> str:
@@ -25,3 +27,20 @@ def is_valid_bech32_address(value: str) -> bool:
     """
     decoded = bech32.decode('bc', value)
     return decoded != (None, None)
+
+
+def echo_with_spaces(func: Callable) -> Callable:
+    """
+    Decorator that allows to echo data in a 'readable' way
+
+    Parameters:
+            func (callable)
+
+    Returns:
+            decorated_func (callable)
+    """
+    def wrapper(args):
+        click.echo("\n")
+        func(args)
+        click.echo("\n")
+    return wrapper
