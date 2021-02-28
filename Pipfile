@@ -15,7 +15,7 @@ bech32 = "*"
 pytest = "*"
 e1839a8 = {path = "."}
 main = {editable = true,path = "."}
-
+krakenex = "*"
 
 [requires]
 python_version = "3.7"

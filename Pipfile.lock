@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7726173d7ad56e3dcc72299043bf0d80c7ff4aa46b48d66e90036de9eca7ce70"
+            "sha256": "efc438b0a8123f3f216c1c5a311eb4ffa685c0e22e4d9cbf5fd45e3f7589c511"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -133,6 +133,13 @@
                 "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"
             ],
             "version": "==1.1.1"
+        },
+        "krakenex": {
+            "hashes": [
+                "sha256:dba48768e75eab3bdd898830be6928d255dfc8cec88d70eaed3b36ef1ca5cff5"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
         },
         "main": {
             "editable": true,
