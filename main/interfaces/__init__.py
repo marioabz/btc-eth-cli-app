@@ -12,6 +12,7 @@ from .exceptions import (
     KrakenException,
 )
 from .interfaces import (
+    load_kraken_trades,
     load_kraken_balances,
     load_bitcoin_balances,
     load_kraken_open_orders,
