@@ -89,7 +89,7 @@ def load_kraken_balances(api_key_file: str) -> Dict[str, str]:
     except NoResults as e:
         msg = f"{e} regarding Balances"
         raise KrakenException(msg)
-    except ResponseException as e:
+    except (ResponseException, FileNotFoundError) as e:
         msg = f"Error: {e}"
         raise KrakenException(msg)
 
@@ -111,7 +111,7 @@ def load_kraken_open_orders(api_key_file: str) -> Dict:
     except NoResults as e:
         msg = f"{e} regarding Open Orders"
         raise KrakenException(msg)
-    except ResponseException as e:
+    except (ResponseException, FileNotFoundError) as e:
         msg = f"Error: {e}"
         raise KrakenException(msg)
 
@@ -134,6 +134,6 @@ def load_kraken_trades(api_key_file: str):
     except NoResults as e:
         msg = f"{e} regarding Trades"
         raise KrakenException(msg)
-    except ResponseException as e:
+    except (ResponseException, FileNotFoundError) as e:
         msg = f"Error: {e}"
         raise KrakenException(msg)
