@@ -70,6 +70,44 @@ def start(**kwargs):
     return addresses_per_type, api_key_file
 
 
+@cli.command()
+@click.argument("args", nargs=-1)
+def bitcoin_balances(args, **kwargs):
+    click.clear()
+    print_bitcoin_balances(args, print_with_color)
+
+
+@cli.command()
+@click.argument("args", nargs=-1)
+def ethereum_balances(args, **kwargs):
+    click.clear()
+    print_ethereum_balances(args, print_with_color)
+
+
+@cli.command()
+@click.argument("file", nargs=-1)
+def kraken_balances(file, **kwargs):
+    click.clear()
+    file = "".join(file)
+    print_kraken_balances(file, print_with_color)
+
+
+@cli.command()
+@click.argument("file", nargs=-1)
+def kraken_trades(file, **kwargs):
+    click.clear()
+    file = "".join(file)
+    print_kraken_trades(file, print_with_color)
+
+
+@cli.command()
+@click.argument("file", nargs=-1)
+def kraken_open_orders(file, **kwargs):
+    click.clear()
+    file = "".join(file)
+    print_kraken_orders(file, print_with_color)
+
+
 def main():
     """
     Main application
@@ -85,6 +123,20 @@ def main():
             )
             if value == "exit":
                 break
+
+            if "bitcoin" in value:
+                if "btc" not in addresses:
+                    msg = "You did not provided addresses for this currency"
+                    print_with_color(msg, color="red")
+                    continue
+                arg = addresses["btc"]
+
+            if "ethereum" in value:
+                if "eth" not in addresses:
+                    msg = "You did not provided addresses for this currency"
+                    print_with_color(msg, color="red")
+                    continue
+                arg = addresses["eth"]
 
             if value == "start":
                 click.echo("Application is already started!")
