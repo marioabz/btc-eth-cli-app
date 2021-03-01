@@ -97,7 +97,6 @@ class KrakenAPI(object):
 if __name__ == "__main__":
     api = KrakenAPI("api.key")
     balance_cols, balances = api.get_balances()
-    print(balances)
     api.save(KrakenAPI.balances_file_name, "Balances on Kraken", *balance_cols, **balances)
     orders_cols, orders = api.get_open_orders()
     api.save(KrakenAPI.open_orders_file_name, "Open orders on Kraken", *orders_cols, **orders)
