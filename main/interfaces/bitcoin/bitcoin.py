@@ -36,4 +36,4 @@ class BitcoinAPI(object):
         if status_code != 200:
             msg = f"HTTP Code: {status_code}, Error: {data['error']}"
             raise BadRequestException(msg)
-        return Decimal(data["final_balance"])
+        return data["final_balance"]
