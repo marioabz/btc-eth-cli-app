@@ -8,10 +8,14 @@ from typing import (
     Tuple
 )
 
-from .helpers import (
+from .exceptions import (
+    NoResults,
+    ResponseException
+)
+
+from ..helpers import (
     get_root_directory,
     check_file_existence,
-    request_checker
 )
 
 
@@ -32,6 +36,16 @@ class KrakenAPI(object):
         self.api = krakenex.API()
         self.initialize_api()
 
+    @staticmethod
+    def request_checker(response: dict):
+        """
+        Function that looks for errors or empty results and raise Errors accordingly
+        """
+        if response["error"]:
+            raise ResponseException(response["error"][0])
+        if "result" not in response:
+            raise NoResults("No results were found")
+
     def initialize_api(self):
         """
         Check for file existance, prepares API for calls if nothing went wrong.
@@ -47,7 +61,7 @@ class KrakenAPI(object):
         Fetch assets balances. Returns assets whose balances surpasses a predetermined threshold.
         """
         response = self.api.query_private('Balance')
-        request_checker(response)
+        KrakenAPI.request_checker(response)
         return ("Currency", "Balance"), response["result"]
 
     def get_open_orders(self) -> Tuple[Iterable, Dict[str, Dict[str, dict]]]:
@@ -55,7 +69,7 @@ class KrakenAPI(object):
         Fetch open orders
         """
         response = self.api.query_private("OpenOrders")
-        request_checker(response)
+        KrakenAPI.request_checker(response)
         formatted_response = dict()
         columns = {
             "Id": "Id",
@@ -72,6 +86,9 @@ class KrakenAPI(object):
             formatted_response[_id]["opened_at"] = item["opentm"]
             formatted_response[_id]["descr"] = item["descr"]["order"]
         return tuple(columns.values()), formatted_response
+
+    def get_trades(self):
+        pass
 
     @staticmethod
     def save(file_name, header, *columns, **response):
