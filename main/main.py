@@ -1,9 +1,18 @@
 
 import click
+
+
 from typing import (
     Dict,
     Tuple,
-    List
+)
+
+from cli_handler import (
+    print_kraken_trades,
+    print_kraken_orders,
+    print_kraken_balances,
+    print_bitcoin_balances,
+    print_ethereum_balances,
 )
 
 from helpers import (
@@ -12,37 +21,17 @@ from helpers import (
 )
 
 
+def print_with_color(msg, color="green"):
+    click.echo(click.style(msg, color))
+
+
 @click.group()
 def cli():
     pass
 
 
-@cli.command()
-@click.option("--addresses")
-@click.option("--api-key-file")
-@click.argument('addresses', nargs=-1)
-def init(addresses: Tuple[str], api_key_file: str, **kwargs) -> (Dict[Dict[str:int]], str):
-    """
-    Allows application to initialize with an unlimited amount of addresses
-    """
-    if not addresses:
-        click.echo("No addresses were provided :(")
-        return addresses
-    addresses_per_type = dict()
-    for address in addresses:
-        currency = get_address_type(address)
-        if not currency:
-            click.echo(f"'{address}' is not a valid "
-                       f"Ethereum or Bitcoin address!")
-            continue
-        if currency not in addresses_per_type:
-            addresses_per_type[currency] = dict()
-        addresses_per_type[currency][address] = 1
-    return addresses_per_type, api_key_file
-
-
 @echo_with_spaces
-def echo_addresses(addresses):
+def echo_addresses(addresses: Dict[str, Dict[str, int]]):
     """
     Echo Bitcoin and/or Ethereum addresses
     """
@@ -53,22 +42,56 @@ def echo_addresses(addresses):
         click.echo("-"*45)
 
 
+@cli.command()
+def start(**kwargs):
+    addresses = list()
+    addresses_per_type = dict()
+    api_key_file = ""
+    try:
+        while True:
+            address = input("Enter address to be scanned: [Press Ctrl+C to continue]\n")
+            _type = get_address_type(address)
+            if not _type:
+                print_with_color(f"'{address}' is not a valid Ethereum "
+                                 f"or Bitcoin address!", color="red")
+                continue
+            if _type not in addresses_per_type:
+                addresses_per_type[_type] = set()
+            addresses_per_type[_type].add(address)
+            addresses.append(address)
+    except KeyboardInterrupt:
+        print_with_color("\n")
+        pass
+    try:
+        api_key_file = input("Enter your api key file: ")
+    except KeyboardInterrupt:
+        print_with_color("\n")
+        pass
+    return addresses_per_type, api_key_file
+
+
 def main():
-    addresses, key_file = init(standalone_mode=False)
-    if not addresses:
-        return
-    echo_addresses(addresses)
-    while True:
-        value = click.prompt(
-            'Select a command to run',
-            type=click.Choice(list(cli.commands.keys()) + ['exit'])
-        )
-        if value == "exit":
-            break
-        if value == "init":
-            click.echo("Application is already initialized!")
-            continue
-        cli.commands[value](standalone_mode=False)
+    """
+    Main application
+    """
+    click.clear()
+    addresses, api_key_file = start(standalone_mode=False)
+    try:
+        while True:
+            arg = api_key_file
+            value = click.prompt(
+                'Select a command to run',
+                type=click.Choice(list(cli.commands.keys()) + ['exit'])
+            )
+            if value == "exit":
+                break
+
+            if value == "start":
+                click.echo("Application is already started!")
+                continue
+            cli.commands[value](arg, standalone_mode=False)
+    except (KeyboardInterrupt, click.exceptions.Abort):
+        print_with_color("\nBye!", color="yellow")
 
 
 if __name__ == "__main__":
