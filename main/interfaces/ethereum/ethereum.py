@@ -4,7 +4,6 @@ from decimal import Decimal
 
 from typing import (
     Dict,
-    List,
 )
 
 from .exceptions import APIException
@@ -66,7 +65,7 @@ class EthereumAPI(object):
                 continue
             token_name = token[token_info][name]
 
-            if EthereumAPI.is_toke_spam(token_name):
+            if EthereumAPI.is_token_spam(token_name):
                 continue
 
             value = Decimal(token[balance])
@@ -87,12 +86,12 @@ class EthereumAPI(object):
         Returns a currency object
         """
         result = dict()
-        result["info"] = str(value)
+        result["balance"] = value
         result["rate"] = _rate
         return result
 
     @staticmethod
-    def is_toke_spam(_name: str) -> bool:
+    def is_token_spam(_name: str) -> bool:
         """
         Returns True is token is spam, False if not
         """
