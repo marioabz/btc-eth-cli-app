@@ -106,6 +106,9 @@ class KrakenAPI(object):
         return tuple(columns_orders.values()), formatted_response
 
     def get_trades(self) -> Tuple[Iterable, Dict[str, Dict[str, dict]]]:
+        """
+        Fetch trades without any type of limit or parameters.
+        """
         response = self.api.query_private("TradesHistory")
         KrakenAPI.request_checker(response)
         formatted_response = dict()
