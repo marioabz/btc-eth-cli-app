@@ -82,8 +82,9 @@ def load_kraken_balances(api_key_file: str) -> Dict[str, str]:
     Returns:
         dict[]: sheet of balances (if any)
     """
-    api = KrakenAPI(api_key_file)
+
     try:
+        api = KrakenAPI(api_key_file)
         _, balances = api.get_balances()
         return balances
     except NoResults as e:
