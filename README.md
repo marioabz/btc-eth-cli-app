@@ -16,7 +16,7 @@ CLI App that allows to manipulate BTC and ETH addresses in different ways.
 4. Run `pipenv install` or `pip install requirements`
 5. Start shell with `pipenv shell`
 6. **Make sure to provide you Kraken API Keys in a file located at the root directory (same depth as main/)**
-7. Run `python main/main.py` to start the interactive shell
+7. Run `python -m main.main` to start the interactive shell
 8. Test the application
 
 
