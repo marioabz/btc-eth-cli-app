@@ -7,7 +7,7 @@ from typing import (
     Tuple,
 )
 
-from cli_handler import (
+from .cli_handler import (
     print_kraken_trades,
     print_kraken_orders,
     print_kraken_balances,
@@ -15,7 +15,7 @@ from cli_handler import (
     print_ethereum_balances,
 )
 
-from helpers import (
+from .helpers import (
     get_address_type,
     echo_with_spaces
 )

@@ -7,13 +7,13 @@ from typing import (
     Callable
 )
 
-from interfaces import (
+from .interfaces import (
     KrakenException,
     BitcoinException,
     EthereumException,
 )
 
-from interfaces import (
+from .interfaces import (
     load_kraken_trades,
     load_kraken_balances,
     load_bitcoin_balances,
