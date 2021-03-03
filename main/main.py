@@ -63,7 +63,7 @@ def start(**kwargs):
         print_with_color("\n")
         pass
     try:
-        api_key_file = input("Enter your api key file: ")
+        api_key_file = input("Enter your api key file name: ")
     except KeyboardInterrupt:
         print_with_color("\n")
         pass
@@ -112,9 +112,12 @@ def main():
     """
     Main application
     """
-    click.clear()
-    addresses, api_key_file = start(standalone_mode=False)
     try:
+        click.clear()
+        addresses, api_key_file = start(standalone_mode=False)
+        if not addresses and not api_key_file:
+            print_with_color("\nNo addresses or api key file name were provided!", color="yellow")
+            return
         while True:
             arg = api_key_file
             value = click.prompt(
@@ -137,6 +140,10 @@ def main():
                     print_with_color(msg, color="red")
                     continue
                 arg = addresses["eth"]
+
+            if "kraken" in value and not api_key_file:
+                print_with_color("No API Key file were provided", color="red")
+                continue
 
             if value == "start":
                 click.echo("Application is already started!")
